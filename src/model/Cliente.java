@@ -76,7 +76,14 @@ public class Cliente {
         this.registradores.add(registrador);
     }
 
-
+    @Override // Sobrescribe toStrig para mostrar informacion util sobre el cliente
+    public String toString(){
+        return "Cliente ID: " + numeroIdentificacion + 
+        ", Tipo de identificacion: " + tipoIdentificacion + 
+        ", Correo electronico: " + correoElectronico +
+        ", Direccion: " + direccionFisica + 
+        ", Registradores: " + registradores.size(); // se muestra cuantos registradores tiene
+    }
 
 
 

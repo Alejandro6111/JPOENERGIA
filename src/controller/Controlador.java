@@ -23,7 +23,7 @@ public class Controlador {
 
         // Agregamos el cliente recien creado a nuestra lista
         this.listaClientes.add(nuevoCliente);
-        System.out.println("Cliente creado exitosamente" + nuevoCliente.mGetNumeroIdentificacion());
+        //System.out.println("Cliente creado exitosamente" + nuevoCliente.mGetNumeroIdentificacion());
     }
 
     // Metodo para obtener la lista de clientes

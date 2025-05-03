@@ -1,8 +1,9 @@
 package view;
 
 import controller.Controlador; // Importa la clase Controlador
+import model.Cliente; // Importar Cliente para lista
 import java.util.Scanner; // Para leer la entrada del usuario
-
+import java.util.List;  // Importar lista
 public class Vista {
 
     private Controlador controlador; // Referencia al controlador
@@ -15,9 +16,46 @@ public class Vista {
     }
     
     public void mMostrarMenuPrincipal(){
-        // ... (lógica del menú principal) ...
-        // Por ahora, llamamos directamente a crear cliente para probar
-        mMostrarMenuCrearCliente();
+        int opcion = -1; // Se inicialliza opcion con un valor invalido
+        while (opcion != 0) {
+            System.out.println("MENU PRINCIPAL");
+            System.out.println("1. Crear nuevo cliente");
+            System.out.println("2. Lista de clientes");
+
+            // mas adelante se añaden el resto de opciones 
+
+            System.out.println("0. Salir");
+            System.out.println("Seleccione una opcion: ");
+
+            try{
+                opcion = Integer.parseInt(scanner.nextLine()); // Se lee la opcion ingresada por el usuario
+                switch (opcion){
+                    case 1:
+                        mMostrarMenuCrearCliente(); // Llamamos al metodo para crear un nuevo cliente
+                        break;
+                    case 2: 
+                        mMostrarListaClientes(); // Llamamos al metodo para mostrar la lista de clientes
+                        break;
+                    case 0:
+                        System.out.println("Opcion no valida, intente de nuevo");
+                        break;      
+                }
+            } catch (NumberFormatException e){
+                System.out.println("Error: Ingrese un numero valido");
+                opcion = -1; // Resetea la opcion para el bucle continue
+            } catch (Exception e){
+                System.out.println("Ocurrio un error: " + e.getMessage());
+                opcion = -1; // Resetea la opcion para el bucle continue
+            }
+            // Pausa simple para que el usurasio pueda leer antes de mostrar el menu 
+
+            if (opcion != 0) {
+                System.out.println("Presione enter para continuar");
+                scanner.nextLine();
+            }
+        }
+        scanner.close(); // Cerramos el Scanner al salir del bucle (Elegir 0)
+        
     }
 
     // Metodo para solicitar los datos del nuevo cliente al usuario
@@ -45,4 +83,28 @@ public class Vista {
         
     }
     
+    public void mMostrarListaClientes(){
+        System.out.println("Lista de clientes: ");
+        List<Cliente> clientes = controlador.mGetListaClientes(); // Obtiene la lista del controlador
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados");
+        } else {
+            // Itera sobre la lista e imprime cada cliente (Usando el metodo toString)
+            for (int i = 0; i < clientes.size(); i++){
+                System.out.println((i + 1) + ". " + clientes.get(i).toString());
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
