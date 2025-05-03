@@ -11,7 +11,8 @@ public class Registrador {
     private String direccion;
     private String ciudad;
 
-    
+    // Un registrador tendra asociados muchos registros de consumos (uno por cada hora) Podemos preparar una lista para almacenarlos, aunque aun nocreemos la clase Consumo
+    private List<Consumo> consumos;
 
 
 }
