@@ -13,7 +13,7 @@ public class App {
         Vista miVista = new Vista(miControlador);
 
         // 3 Iniciar la aplicacion mostrando el menu principal
-        miVista.mostrarMenuPrincipal();
+        miVista.mMostrarMenuPrincipal();
 
         System.out.println("Aplicacion finalizada");
     }

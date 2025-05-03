@@ -17,7 +17,7 @@ public class Vista {
     public void mMostrarMenuPrincipal(){
         // ... (lógica del menú principal) ...
         // Por ahora, llamamos directamente a crear cliente para probar
-        mMostrarMenuPrincipal();
+        mMostrarMenuCrearCliente();
     }
 
     // Metodo para solicitar los datos del nuevo cliente al usuario
@@ -26,7 +26,7 @@ public class Vista {
         System.out.println("CREAR NUEVO CLIENTE");
 
         try {System.out.println("Ingrese el numero de identificacion: ");
-        long numId = long.parseLong(scanner.nextLine());
+        long numId = Long.parseLong(scanner.nextLine());
         System.out.println("Ingrese el tipo de identificacion: ");
         String tipoId = scanner.nextLine();
         System.out.println("Ingrese el correo electronico: ");
