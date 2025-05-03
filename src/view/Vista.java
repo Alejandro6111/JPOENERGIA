@@ -21,7 +21,7 @@ public class Vista {
             System.out.println("MENU PRINCIPAL");
             System.out.println("1. Crear nuevo cliente");
             System.out.println("2. Lista de clientes");
-
+            System.out.println("3. Crear registrador para cliente"); // NUEVA OPCION
             // mas adelante se añaden el resto de opciones 
 
             System.out.println("0. Salir");
@@ -36,9 +36,15 @@ public class Vista {
                     case 2: 
                         mMostrarListaClientes(); // Llamamos al metodo para mostrar la lista de clientes
                         break;
+                    case 3: 
+                        mMostrarMenuCrearRegistrador(); // Llamamos al metodo para crear un nuevo registrador
+                        break;
                     case 0:
                         System.out.println("Opcion no valida, intente de nuevo");
                         break;      
+                    default:
+                        System.out.println("Opcion no valida, intente de nuevo");
+                        break;
                 }
             } catch (NumberFormatException e){
                 System.out.println("Error: Ingrese un numero valido");
@@ -97,7 +103,48 @@ public class Vista {
     }
 
 
+    public void mMostrarMenuCrearRegistrador(){
+        System.out.println("Crear nuevo registrador ");
 
+        // 1. Mostrar clientess para que el usuario elija 
+        System.out.println("Clientes disponibles: ");
+        mMostrarListaClientes(); // Reutilizamos el metodo para mostrar la lista de clientes
+        List<Cliente> clientes = controlador.mGetListaClientes();
+        if(clientes.isEmpty()){
+            System.out.println("No hay clientes para crear un registrador");
+            return;
+        }
+
+        try {
+            // 2. Pedir al usuario que seleccione un cliente, mediante ID
+            System.out.println("Ingrese el ID del cliente al que desea anadir el registrador: ");
+            long idClienteSeleccionado = Long.parseLong(scanner.nextLine());
+
+            // 3. Pedir los datos del nuevo registrador
+            System.out.println("Ingrese el ID del cliente al que desea añadir el registrador: ");
+            long idRegistrador = Long.parseLong(scanner.nextLine());
+            System.out.println("Ingrese la direccion del registrador: ");
+            String direccion = scanner.nextLine();
+            System.out.println("Ingrese la ciudad del registrador: ");
+            String ciudad = scanner.nextLine();
+
+            // 4. llamar al controlador para añador el registrador 
+            boolean exito = controlador.mCrearRegistradorParaCliente(idClienteSeleccionado, idRegistrador, direccion, ciudad);
+            if (exito){
+                System.out.println("Registrador creado exitosamente" + idClienteSeleccionado);
+            } else {
+                System.out.println("Error: No se pudo añádir el registrador, verifique el ID");
+            }
+            
+
+        } catch (NumberFormatException e){
+            System.out.println("Error, ingrese numeros validos");
+        } catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        }
+
+    }
 
 
 

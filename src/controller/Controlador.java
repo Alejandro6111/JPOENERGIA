@@ -1,6 +1,7 @@
 package controller;
 
 import model.Cliente; // Importa la clase Cliente
+import model.Registrador; // Importa la clase Registrador
 import model.Registrador; // Puede que se necesite
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,15 @@ public class Controlador {
     }
 
 
+    public boolean mCrearRegistradorParaCliente(long idCliente, long idRegistrador, String direccion, String ciudad){
+        // Buscar al cliente por su ID 
+        Cliente clienteEncontrado = mBuscarClientePorId(idCliente);
+        if(clienteEncontrado != null){
+            // Verifica su ya existe un registrador con ese ID
 
+            //Crear el nuevo registrador
+        }
+    }
 
 
 
