@@ -17,8 +17,19 @@ public class Controlador {
 
     // Metodo para crear un nuevo cliente (Recibe datos desde la vista)
 
+    public void mCrearCliente(long numeroId, String tipoId, String correo, String direccion){
+        // Creamos el nuevo objeto Cliente usando el constructor de la clase cliente
+        Cliente nuevoCliente = new Cliente(numeroId, tipoId, correo, direccion);
 
+        // Agregamos el cliente recien creado a nuestra lista
+        this.listaClientes.add(nuevoCliente);
+        System.out.println("Cliente creado exitosamente" + nuevoCliente.mGetNumeroIdentificacion());
+    }
 
+    // Metodo para obtener la lista de clientes
+    public List<Cliente> mGetListaClientes(){
+        return this.listaClientes;
+    }
 
 
 
