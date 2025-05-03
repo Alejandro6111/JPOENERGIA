@@ -25,8 +25,61 @@ public class Cliente {
         this.tipoIdentificacion = tipoIdentificacion;
         this.correoElectronico = correoElectronico;
         this.direccionFisica = direccionFisica;
-        this.registradores = new ArrayList<>();
+        this.registradores = new ArrayList<>(); // Creamos una lista vacia al crear el cliente
     }
+
+    // Getters y Setters
+
+
+    // Getter para numero de identificacion
+    public long mGetNumeroIdentificacion(){
+        return numeroIdentificacion;
+    }
+
+    // Getter para tipo de identificacion 
+    public String mGetTipoIdentificacion(){
+        return tipoIdentificacion;
+    }
+
+    // Setter para tipo de identificacion 
+    public void mSetTipoIdentificacion(String tipoIdentificacion){
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    // Getter para correo electronico 
+    public String mGetCorreoElectronico(){
+        return correoElectronico;
+    }
+
+    // Setter para correo electronico
+    public void mSetCorreoElectronico(String correoElectronico){
+        this.correoElectronico = correoElectronico;
+    }
+
+    // Getter para direccion fisica
+    public String mGetDireccionFisica(){
+        return direccionFisica;
+    }
+
+    // Setter para direccion fisica 
+    public void mSetDireccionFisica(String direccionFisica){
+        this.direccionFisica = direccionFisica;
+    }
+
+    // Getter para la lista de registradores 
+    public List<Registrador> mGetRegistradores(){
+        return registradores;
+    }
+
+    // Metodo para añadadir un registrador a la lista del cliente
+    public void mAgregarRegistrador(Registrador registrador){
+        this.registradores.add(registrador);
+    }
+
+
+
+
+
 
     
 }
