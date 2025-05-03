@@ -11,6 +11,22 @@ public class Cliente {
     private String tipoIdentificacion;
     private String correoElectronico;
     private String direccionFisica;
-    
+
+    // Un cliente debe tener almenos un registrador
+    // Uso una lista para almecenar los registradores asociados al cliente
+    private List<Registrador> registradores;
+
+    // Constructor 
+    // Un metodo especial para crear nuebos objetos Cliente 
+    // Inicializamos los atributos basicos y la lista de registradores
+
+    public Cliente(long numeroIdentificacion, String tipoIdentificacion, String correoElectronico, String direccionFisica){
+        this.numeroIdentificacion = numeroIdentificacion;
+        this.tipoIdentificacion = tipoIdentificacion;
+        this.correoElectronico = correoElectronico;
+        this.direccionFisica = direccionFisica;
+        this.registradores = new ArrayList<>();
+    }
+
     
 }
