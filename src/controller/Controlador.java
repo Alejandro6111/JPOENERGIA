@@ -40,11 +40,29 @@ public class Controlador {
             // Verifica su ya existe un registrador con ese ID
 
             //Crear el nuevo registrador
+            Registrador nuevoRegistrador = new Registrador(idRegistrador, direccion, ciudad);
+            
+            // Añadir el registrador a la lista del cliente encontrado
+            clienteEncontrado.mAgregarRegistrador(nuevoRegistrador);
+
+            System.out.println("Registrador " + idRegistrador + "Añadido al cliente" + idCliente + "en el controlador"); //Mensaje de depuraciob 
+            return true;
+
+        } else {
+            // No se encontro el cliente con ese ID
+            return false;
         }
     }
 
-
-
+    // Metodo auxiliar/privado: Busca un cliente por ID en la lista
+    private Cliente mBuscarClientePorId(long idCliente){
+        for (Cliente cliente : listaClientes){
+            if (cliente.mGetNumeroIdentificacion() == idCliente){
+                return cliente; // Devuelve el cliente si lo encuentra
+            }
+        }
+        return null; // Devuelve null su no lo encuentra
+    }
 
 
 
