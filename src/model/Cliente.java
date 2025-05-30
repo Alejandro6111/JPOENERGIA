@@ -1,26 +1,32 @@
 package model; // Indica que esta clase pertenece al paquete model
 
+import java.time.YearMonth;
 import java.util.ArrayList; // Necesitamos importar la clase ArrayList para la lista de registradores
 import java.util.List; // Importar List tambien
+import java.util.Objects; // Importamos Objects para comparar objetos si es necesario
 
+/**
+ * Clase que representa a un Cliente no regulado de energía.
+ */
 public class Cliente {
 
-    // Atributos del cliente 
-    // Numero unico, tipo id, correo, direccion
-    private long numeroIdentificacion; // Usamos long para numeros de identidicacion potencialmente grandes
+    /** Número de identificación único del cliente */
+    private final String numeroIdentificacion; // Usamos long para numeros de identidicacion potencialmente grandes
     private String tipoIdentificacion;
     private String correoElectronico;
     private String direccionFisica;
 
-    // Un cliente debe tener almenos un registrador
-    // Uso una lista para almecenar los registradores asociados al cliente
+      /** Lista de registradores asociados al cliente */
     private List<Registrador> registradores;
 
-    // Constructor 
-    // Un metodo especial para crear nuebos objetos Cliente 
-    // Inicializamos los atributos basicos y la lista de registradores
-
-    public Cliente(long numeroIdentificacion, String tipoIdentificacion, String correoElectronico, String direccionFisica){
+    /**
+     * Constructor del cliente.
+     * @param numeroIdentificacion Número de identificación.
+     * @param tipoIdentificacion Tipo de documento.
+     * @param correoElectronico Correo electrónico.
+     * @param direccionFisica Dirección física.
+     */
+    public Cliente(String numeroIdentificacion, String tipoIdentificacion, String correoElectronico, String direccionFisica){
         this.numeroIdentificacion = numeroIdentificacion;
         this.tipoIdentificacion = tipoIdentificacion;
         this.correoElectronico = correoElectronico;
@@ -32,7 +38,7 @@ public class Cliente {
 
 
     // Getter para numero de identificacion
-    public long mGetNumeroIdentificacion(){
+    public String mGetNumeroIdentificacion(){
         return numeroIdentificacion;
     }
 
@@ -71,9 +77,32 @@ public class Cliente {
         return registradores;
     }
 
-    // Metodo para añadadir un registrador a la lista del cliente
+   /**
+     * Agrega un registrador si no existe aún.
+     * @param registrador Registrador a agregar.
+     */
     public void mAgregarRegistrador(Registrador registrador){
-        this.registradores.add(registrador);
+        if (registrador != null && !this.registradores.contains(registrador)) {
+            this.registradores.add(registrador); // Añade el registrador a la lista si no es nulo y no esta repetido
+        } else {
+            System.out.println("Registrador ya existe o es nulo, no se puede agregar.");
+            
+        }
+    }
+
+   /**
+     * Elimina un registrador por su número de identificación.
+     * @param idRegistrador Número de identificación del registrador.
+     */
+    public void mEliminarRegistrador(String idRegistrador){
+        this.registradores.removeIf(r -> String.valueOf(r.getNumeroIdentificacion()).equals(idRegistrador)); // Elimina el registrador de la lista
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // Compara si son el mismo objeto
+        if (!(o instanceof Cliente)) return false; // Comprueba si es una instancia de Cliente
+        Cliente cliente = (Cliente) o; // Convierte el objeto a Cliente
+        return Objects.equals(numeroIdentificacion, cliente.numeroIdentificacion); // Compara el numero de identificacion
     }
 
     @Override // Sobrescribe toStrig para mostrar informacion util sobre el cliente
@@ -84,9 +113,15 @@ public class Cliente {
         ", Direccion: " + direccionFisica + 
         ", Registradores: " + registradores.size(); // se muestra cuantos registradores tiene
     }
-
-
-
-
     
+    /**
+     * Método pendiente de implementar para cargar consumos mensuales.
+     * @param of Año y mes del consumo.
+     */
+    public void cargarConsumoMensual(YearMonth of) {
+        for (Registrador r : registradores) {
+            r.cargarConsumoMensual(of); // Llama al metodo de cada registrador para cargar el consumo mensual
+        }
+    }
+
 }
