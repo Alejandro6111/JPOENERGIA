@@ -1,127 +1,207 @@
-package model; // Indica que esta clase pertenece al paquete model
+package model;
 
-import java.time.YearMonth;
-import java.util.ArrayList; // Necesitamos importar la clase ArrayList para la lista de registradores
-import java.util.List; // Importar List tambien
-import java.util.Objects; // Importamos Objects para comparar objetos si es necesario
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
- * Clase que representa a un Cliente no regulado de energía.
+ * Representa a un cliente de servicios de energía.
+ * Guarda su información básica y una lista de los medidores (registradores) que tiene asociados.
+ * Según las reglas del proyecto, un cliente necesita tener al menos un medidor de energía.
  */
 public class Cliente {
 
-    /** Número de identificación único del cliente */
-    private final String numeroIdentificacion; // Usamos long para numeros de identidicacion potencialmente grandes
+    /** Número de identificación único del cliente. Una vez asignado, no cambia. */
+    private final String numeroIdentificacion;
+
+    /** Tipo de documento del cliente, por ejemplo: Cédula, NIT, etc. */
     private String tipoIdentificacion;
+
+    /** Correo electrónico de contacto del cliente. */
     private String correoElectronico;
+
+    /** Dirección donde reside o se encuentra el cliente. */
     private String direccionFisica;
 
-      /** Lista de registradores asociados al cliente */
+    /** Lista de medidores de energía que pertenecen a este cliente. */
     private List<Registrador> registradores;
 
     /**
-     * Constructor del cliente.
-     * @param numeroIdentificacion Número de identificación.
-     * @param tipoIdentificacion Tipo de documento.
-     * @param correoElectronico Correo electrónico.
-     * @param direccionFisica Dirección física.
+     * Crea una nueva instancia de Cliente.
+     *
+     * @param numeroIdentificacion El número único para identificar al cliente. Es obligatorio.
+     * @param tipoIdentificacion El tipo de documento que usa el cliente.
+     * @param correoElectronico El email del cliente.
+     * @param direccionFisica La dirección postal del cliente.
      */
-    public Cliente(String numeroIdentificacion, String tipoIdentificacion, String correoElectronico, String direccionFisica){
+    public Cliente(String numeroIdentificacion, String tipoIdentificacion,
+                   String correoElectronico, String direccionFisica) {
+        if (numeroIdentificacion == null || numeroIdentificacion.trim().isEmpty()) {
+            throw new IllegalArgumentException("El número de identificación es obligatorio y no puede estar vacío.");
+        }
         this.numeroIdentificacion = numeroIdentificacion;
         this.tipoIdentificacion = tipoIdentificacion;
         this.correoElectronico = correoElectronico;
         this.direccionFisica = direccionFisica;
-        this.registradores = new ArrayList<>(); // Creamos una lista vacia al crear el cliente
+        this.registradores = new ArrayList<>(); // Cada cliente empieza con una lista de medidores vacía.
     }
 
-    // Getters y Setters
+    // --- Métodos para obtener y modificar la información del cliente ---
 
-
-    // Getter para numero de identificacion
-    public String mGetNumeroIdentificacion(){
+    /**
+     * Devuelve el número de identificación del cliente.
+     * @return El número de identificación.
+     */
+    public String mGetNumeroIdentificacion() {
         return numeroIdentificacion;
     }
 
-    // Getter para tipo de identificacion 
-    public String mGetTipoIdentificacion(){
+    /**
+     * Devuelve el tipo de documento del cliente.
+     * @return El tipo de identificación.
+     */
+    public String mGetTipoIdentificacion() {
         return tipoIdentificacion;
     }
 
-    // Setter para tipo de identificacion 
-    public void mSetTipoIdentificacion(String tipoIdentificacion){
+    /**
+     * Permite cambiar el tipo de documento del cliente.
+     * @param tipoIdentificacion El nuevo tipo de documento.
+     */
+    public void mSetTipoIdentificacion(String tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
     }
 
-    // Getter para correo electronico 
-    public String mGetCorreoElectronico(){
+    /**
+     * Devuelve el correo electrónico del cliente.
+     * @return El correo electrónico.
+     */
+    public String mGetCorreoElectronico() {
         return correoElectronico;
     }
 
-    // Setter para correo electronico
-    public void mSetCorreoElectronico(String correoElectronico){
+    /**
+     * Permite cambiar el correo electrónico del cliente.
+     * @param correoElectronico El nuevo correo electrónico.
+     */
+    public void mSetCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
     }
 
-    // Getter para direccion fisica
-    public String mGetDireccionFisica(){
+    /**
+     * Devuelve la dirección física del cliente.
+     * @return La dirección física.
+     */
+    public String mGetDireccionFisica() {
         return direccionFisica;
     }
 
-    // Setter para direccion fisica 
-    public void mSetDireccionFisica(String direccionFisica){
+    /**
+     * Permite cambiar la dirección física del cliente.
+     * @param direccionFisica La nueva dirección física.
+     */
+    public void mSetDireccionFisica(String direccionFisica) {
         this.direccionFisica = direccionFisica;
     }
 
-    // Getter para la lista de registradores 
-    public List<Registrador> mGetRegistradores(){
-        return registradores;
+    /**
+     * Devuelve una lista con todos los medidores asociados a este cliente.
+     * Se entrega una copia de la lista para mantener segura la lista original del cliente.
+     * @return Una lista de objetos Registrador.
+     */
+    public List<Registrador> mGetRegistradores() {
+        return new ArrayList<>(registradores); // Se devuelve una copia.
     }
 
-   /**
-     * Agrega un registrador si no existe aún.
-     * @param registrador Registrador a agregar.
+    // --- Métodos para administrar los medidores del cliente ---
+
+    /**
+     * Agrega un nuevo medidor a la lista del cliente.
+     * No se agregará si el medidor es nulo o si ya existe uno con el mismo número de identificación.
+     *
+     * @param registrador El medidor que se desea agregar.
+     * @return true si se pudo agregar, false si hubo algún problema (nulo, duplicado).
      */
-    public void mAgregarRegistrador(Registrador registrador){
-        if (registrador != null && !this.registradores.contains(registrador)) {
-            this.registradores.add(registrador); // Añade el registrador a la lista si no es nulo y no esta repetido
-        } else {
-            System.out.println("Registrador ya existe o es nulo, no se puede agregar.");
-            
+    public boolean mAgregarRegistrador(Registrador registrador) {
+        if (registrador == null) {
+            System.out.println("Atención: No se puede agregar un medidor nulo.");
+            return false;
         }
+        // Verifica que no haya ya un medidor con el mismo ID para este cliente.
+        for (Registrador r : this.registradores) {
+            if (r.mGetNumeroIdentificacion().equals(registrador.mGetNumeroIdentificacion())) {
+                System.out.println("Atención: El medidor con ID " + registrador.mGetNumeroIdentificacion() + " ya está asociado a este cliente. No se agregó.");
+                return false;
+            }
+        }
+        this.registradores.add(registrador);
+        return true;
     }
 
-   /**
-     * Elimina un registrador por su número de identificación.
-     * @param idRegistrador Número de identificación del registrador.
+    /**
+     * Elimina un medidor de la lista del cliente, usando su número de identificación.
+     *
+     * @param idRegistrador El número de identificación del medidor a quitar.
+     * @return true si se encontró y eliminó el medidor, false si no.
      */
-    public void mEliminarRegistrador(String idRegistrador){
-        this.registradores.removeIf(r -> String.valueOf(r.getNumeroIdentificacion()).equals(idRegistrador)); // Elimina el registrador de la lista
+    public boolean mEliminarRegistrador(String idRegistrador) {
+        if (idRegistrador == null) return false;
+        return this.registradores.removeIf(r -> r.mGetNumeroIdentificacion().equals(idRegistrador));
     }
+
+    /**
+     * Busca un medidor específico dentro de la lista de este cliente.
+     * @param idRegistrador El número de identificación del medidor que se busca.
+     * @return El objeto Registrador si se encuentra, o null si no existe.
+     */
+    public Registrador mBuscarRegistrador(String idRegistrador) {
+        if (idRegistrador == null) return null;
+        for (Registrador r : this.registradores) {
+            if (r.mGetNumeroIdentificacion().equals(idRegistrador)) {
+                return r;
+            }
+        }
+        return null; // No se encontró el medidor.
+    }
+
+    // --- Métodos estándar de Java ---
+
+    /**
+     * Compara este cliente con otro objeto para ver si son "iguales".
+     * Se considera que dos clientes son iguales si tienen el mismo número de identificación.
+     * @param o El otro objeto con el que se quiere comparar.
+     * @return true si son iguales, false en caso contrario.
+     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // Compara si son el mismo objeto
-        if (!(o instanceof Cliente)) return false; // Comprueba si es una instancia de Cliente
-        Cliente cliente = (Cliente) o; // Convierte el objeto a Cliente
-        return Objects.equals(numeroIdentificacion, cliente.numeroIdentificacion); // Compara el numero de identificacion
+        if (this == o) return true; // Es el mismo objeto en memoria.
+        if (!(o instanceof Cliente)) return false; // No es ni siquiera un Cliente.
+        Cliente cliente = (Cliente) o; // Ahora sí, lo trato como Cliente.
+        return Objects.equals(numeroIdentificacion, cliente.numeroIdentificacion); // Compara los IDs.
     }
 
-    @Override // Sobrescribe toStrig para mostrar informacion util sobre el cliente
-    public String toString(){
-        return "Cliente ID: " + numeroIdentificacion + 
-        ", Tipo de identificacion: " + tipoIdentificacion + 
-        ", Correo electronico: " + correoElectronico +
-        ", Direccion: " + direccionFisica + 
-        ", Registradores: " + registradores.size(); // se muestra cuantos registradores tiene
-    }
-    
     /**
-     * Método pendiente de implementar para cargar consumos mensuales.
-     * @param of Año y mes del consumo.
+     * Genera un número (código hash) que representa al cliente.
+     * Útil para colecciones que optimizan búsquedas, como HashMaps. Se basa en el ID.
+     * @return El código hash del cliente.
      */
-    public void cargarConsumoMensual(YearMonth of) {
-        for (Registrador r : registradores) {
-            r.cargarConsumoMensual(of); // Llama al metodo de cada registrador para cargar el consumo mensual
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroIdentificacion);
     }
 
+    /**
+     * Devuelve un texto que describe al cliente con su información principal.
+     * @return Una cadena de texto con los datos del cliente.
+     */
+    @Override
+    public String toString() {
+        return "Cliente {" +
+               "ID: '" + numeroIdentificacion + '\'' +
+               ", Tipo ID: '" + tipoIdentificacion + '\'' +
+               ", Correo: '" + correoElectronico + '\'' +
+               ", Dirección: '" + direccionFisica + '\'' +
+               ", Cantidad de Medidores: " + registradores.size() +
+               '}';
+    }
 }
